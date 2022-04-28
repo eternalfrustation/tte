@@ -1,12 +1,10 @@
-
-use std::io::{Read, Seek};
 use std::fs::File;
+use std::io::{Read, Seek};
 
 pub struct RGB(u8, u8, u8);
 
-pub struct Color_component {
-    data_size: u64,
-    data_pos: u64,
+pub struct TextToken {
+    data: String,
     color: RGB,
 }
 
@@ -19,18 +17,35 @@ pub struct Backend {
 
 pub struct Line {
     line_number: u64,
-    color_table: Vec<Color_component>,
-    data: Vec<Vec<u8>>,
+    data: Vec<TextToken>,
 }
 
 impl Backend {
-    pub fn handle_keys(key: char, mod_key: char) {
-        
+    pub fn handle_keys(key: char, mod_key: char) {}
+    pub fn get_display_data(&mut self, f_w: u32, f_h: u32) -> Vec<Line> {
+        let mut line_len:u64;
+        let mut i:u64 = 0;
+        let mut line_start:u64;
+        let mut line_end:u64;
+        let mut data = Vec::new();
+        loop {
+            line_start = self.pos_table[(self.top_line + i) as usize];
+            line_end = self.pos_table[(self.top_line + 1 + i) as usize];
+            line_len = line_end - line_start;
+            if line_len < f_w as u64 {
+                 data.push(Line{
+                     line_number: self.top_line + i,
+                     data: vec![TextToken{
+                         color: RGB(255,255,255),
+                         data: 
+                     }]});
+            }
+            if i >= f_h as u64 {
+                break;
+            }
+        }
+        return data;
     }
-    pub fn get_display_data(f_w: i32, f_h: i32) {
-        
-    }
-    
 }
 
 pub fn get_position_table(file: &mut File) -> Vec<u64> {

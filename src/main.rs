@@ -1,7 +1,7 @@
-use std::env;
-use std::fs::File;
 use crate::backend::get_position_table;
 use crate::frontend::init_frontend;
+use std::env;
+use std::fs::File;
 mod backend;
 mod frontend;
 fn main() {
@@ -14,4 +14,3 @@ fn main() {
     print!("Line endings are at {:?}", get_position_table(&mut f));
     init_frontend();
 }
-
